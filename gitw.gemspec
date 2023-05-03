@@ -38,6 +38,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rubocop', '~> 1.21'
   spec.add_development_dependency 'rubocop-minitest', '~> 0.29.0'
   spec.add_development_dependency 'rubocop-rake', '~> 0.6.0'
+  spec.add_development_dependency 'simplecov', '~> 0.22.0'
   spec.add_development_dependency 'yard-doctest', '~> 0.1.17'
   spec.add_development_dependency 'yardstick', '~>  0.9.9'
 end

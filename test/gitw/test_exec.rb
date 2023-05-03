@@ -1,31 +1,28 @@
 # frozen_string_literal: true
 
 require 'test_helper'
-# require 'gitcmd/exec'
 
-# # unit test for Gitcmd::GitCommand
-# class TestExec < Minitest::Test
-#   def test_exec_with_std_ruby_scenario
-#     cmd = ['ruby', '-e', 'print "o"; STDOUT.flush; STDERR.print "e"']
-#     exec_output = Gitcmd::Exec.new(*cmd).exec
+require 'gitw/exec'
 
-#     assert_equal 'o', exec_output.stdout
-#     assert_equal 'e', exec_output.stderr
-#     assert_predicate exec_output.status, :success?
-#   end
-# end
+# unit tests for Gitw::Exec
+class TestExec < Minitest::Test
+  def test_successful_exec
+    result = Gitw::Exec.new(':').exec
 
-# # unit test for Gitcmd::GitOutput
-# class TestExecOutput < Minitest::Test
-#   def test_instance_base_accessor
-#     exec_output = Gitcmd::ExecOutput.new(
-#       status: :status,
-#       stdout: :stdout,
-#       stderr: :stderr
-#     )
+    assert_equal 0, result.exitstatus
+    assert_predicate result, :success?
+    refute_predicate result, :signaled?
 
-#     assert_equal :status, exec_output.status
-#     assert_equal :stdout, exec_output.stdout
-#     assert_equal :stderr, exec_output.stderr
-#   end
-# end
+    assert_equal [':'], result.commands
+  end
+
+  def test_failing_exec
+    result = Gitw::Exec.new('/bin/false').exec
+
+    assert_equal 1, result.exitstatus
+    refute_predicate result, :success?
+    refute_predicate result, :signaled?
+
+    assert_equal ['/bin/false'], result.commands
+  end
+end

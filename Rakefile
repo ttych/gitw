@@ -13,13 +13,19 @@ Rake::TestTask.new(:test) do |t|
   t.warning = true
 end
 
+desc 'Generates a coverage report'
+task :coverage do
+  ENV['COVERAGE'] = 'true'
+  Rake::Task['test'].execute
+end
+
 require 'rubocop/rake_task'
 RuboCop::RakeTask.new
 
 require 'yard'
 
 YARD::Rake::YardocTask.new do |t|
-  t.files   = ['lib/**/*.rb']
+  t.files = ['lib/**/*.rb']
   t.stats_options = ['--list-undoc']
 end
 

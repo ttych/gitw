@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require_relative 'gitw/version'
-require_relative 'gitw/conf'
 require_relative 'gitw/repository'
 
 # namespace for gitw library
@@ -9,12 +8,16 @@ require_relative 'gitw/repository'
 # - init
 # - clone
 # - repository
-# - config
-# - conf (gitw)
 module Gitw
-  def self.conf
-    @conf ||= Gitw::Conf.new
-    yield @conf if block_given?
-    @conf
+  def self.init(dir = '.', **options)
+    Gitw::Repository.init(dir, **options)
+  end
+
+  def self.clone(from, to = nil, **options)
+    Gitw::Repository.clone(from, to, **options)
+  end
+
+  def self.repository(directory, **options)
+    Gitw::Repository.at(directory, **options)
   end
 end
