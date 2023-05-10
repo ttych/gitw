@@ -3,6 +3,8 @@
 require 'forwardable'
 require 'open3'
 
+require_relative 'git_error'
+
 module Gitw
   # exec
   class Exec
@@ -42,6 +44,12 @@ module Gitw
       @status = status
       @stdout = stdout
       @stderr = stderr
+    end
+
+    def raise_on_failure
+      return if success?
+
+      raise Gitw::GitError, "git exited #{exitstatus}: #{stderr}"
     end
   end
 end

@@ -16,6 +16,12 @@ class TestExec < Minitest::Test
     assert_equal [':'], result.commands
   end
 
+  def test_raise_on_failure_on_successful_exec
+    result = Gitw::Exec.new(':').exec
+
+    result.raise_on_failure
+  end
+
   def test_failing_exec
     result = Gitw::Exec.new('/bin/false').exec
 
@@ -24,5 +30,13 @@ class TestExec < Minitest::Test
     refute_predicate result, :signaled?
 
     assert_equal ['/bin/false'], result.commands
+  end
+
+  def test_raise_on_failure_on_failing_exec
+    result = Gitw::Exec.new('/bin/false').exec
+
+    assert_raises(Gitw::GitError) do
+      result.raise_on_failure
+    end
   end
 end

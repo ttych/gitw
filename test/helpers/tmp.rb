@@ -4,7 +4,7 @@ module Test
   module Helpers
     # tmp utilities for test
     module Tmp
-      def in_temp_dir
+      def in_tmpdir
         tmpdir = Dir.mktmpdir
         tmpdir_realpath = File.realpath(tmpdir)
         Dir.chdir(tmpdir_realpath) do

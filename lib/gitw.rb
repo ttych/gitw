@@ -2,6 +2,7 @@
 
 require_relative 'gitw/version'
 require_relative 'gitw/repository'
+require_relative 'gitw/git_exe'
 
 # namespace for gitw library
 # service entrypoint for
@@ -19,5 +20,9 @@ module Gitw
 
   def self.repository(directory, **options)
     Gitw::Repository.at(directory, **options)
+  end
+
+  def self.git_path=(git_path)
+    Gitw::GitExe.git_path = git_path
   end
 end
