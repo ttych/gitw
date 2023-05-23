@@ -5,8 +5,6 @@ module Gitw
   # allow to define available options
   #   and to create standard args for execution
   class GitOpts
-    attr_reader :opts
-
     def initialize
       @allowed = []
       @allowed_index = {}
@@ -26,12 +24,21 @@ module Gitw
       self
     end
 
+    def opts
+      @opts.map do |label, arg|
+        linked_allowed_opt = @allowed_index[label]
+        next unless linked_allowed_opt
+
+        linked_allowed_opt.build_opt(arg)
+      end.compact
+    end
+
+    def to_a
+      opts.flatten
+    end
+
     def add(label, arg = nil)
-      linked_allowed_opt = @allowed_index[label]
-      if linked_allowed_opt
-        opt = linked_allowed_opt.build_opt(label, arg)
-        @opts << opt unless opt.nil?
-      end
+      @opts << [label, arg]
 
       self
     end
@@ -46,6 +53,8 @@ module Gitw
 
     def from_h(options)
       options.each do |k, v|
+        next if v == false
+
         add(k, v)
       end
 
@@ -53,7 +62,7 @@ module Gitw
     end
 
     def from(options)
-      case options.class
+      case options
       when Hash then from_h(options)
       when Array then from_a(options)
       else
@@ -80,7 +89,7 @@ module Gitw
       [label, label.to_s, short, long].compact.each(&block)
     end
 
-    def build_opt(_label, arg)
+    def build_opt(arg = nil)
       return if with_arg && arg.nil?
 
       opt = []

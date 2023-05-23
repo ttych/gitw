@@ -22,7 +22,7 @@ module Gitw
     Gitw::Repository.at(directory, **options)
   end
 
-  def self.git_path=(git_path)
-    Gitw::GitExe.git_path = git_path
+  def self.git_bin=(git_bin)
+    Gitw::GitExe.git_bin = git_bin
   end
 end
