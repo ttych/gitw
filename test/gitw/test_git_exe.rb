@@ -192,6 +192,16 @@ describe Gitw::GitExe do
       end
     end
 
+    describe '.absolute_git_dir' do
+      it 'provides shortcut to rev-parse absolute-git-dir' do
+        in_tmpdir do |tmpdir|
+          `git init`
+
+          assert_equal File.join(tmpdir, '.git'), @git.absolute_git_dir
+        end
+      end
+    end
+
     describe '.is_inside_git_dir' do
       it 'returns false from work tree' do
         in_tmpdir do |_tmpdir|

@@ -5,6 +5,7 @@ require_relative 'git_error'
 require_relative 'git_opts'
 require_relative 'git/status'
 require_relative 'git/remote_ref'
+require_relative 'git/url'
 
 # rubocop:disable Metrics/ClassLength, Metrics/MethodLength, Naming/PredicateName
 module Gitw
@@ -116,8 +117,13 @@ module Gitw
     end
 
     def toplevel(git_options: nil)
-      git_dir = rev_parse(git_options: git_options, show_toplevel: nil)
-      git_dir.strip
+      toplevel_dir = rev_parse(git_options: git_options, show_toplevel: nil)
+      toplevel_dir.strip
+    end
+
+    def absolute_git_dir(git_options: nil)
+      dir = rev_parse(git_options: git_options, absolute_git_dir: nil)
+      dir.strip
     end
 
     def is_inside_git_dir(git_options: nil)
